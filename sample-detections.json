@@ -1,35 +1,4 @@
-<body style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
-  <script
-    class="jsbin"
-    src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
-  ></script>
-  <script
-    class="jsbin"
-    src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"
-  ></script>
-  <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
-  <script>
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-              $('#uploaded-image')
-                  .attr('src', e.target.result);
-          };
-
-          reader.readAsDataURL(input.files[0]);
-      }
-    }
-  </script>
-  <script>
-    function replaceAllOtherFaces(index) {
-      console.log('*** Replacing all faces except', index);
-    }
-  </script>
-  <script>
-    function createFaceBorders() {
-      const faceArray = [
+[
     {
         "alignedRect": {
             "_box": {
@@ -1807,48 +1776,3 @@
         }
     }
 ]
-      faceArray.forEach((face, index) => {
-        const faceBox = document.createElement("div");
-        const originalImgWidth = face.alignedRect._imageDims._width;
-        const originalImgHeight = face.alignedRect._imageDims._height;
-        faceBox.style.cssText =`
-            width:${face.alignedRect._box._width / originalImgWidth * 100}%;
-            height:${face.alignedRect._box._height / originalImgHeight * 100}%;
-            top:${face.alignedRect._box._y / originalImgHeight * 100}%;
-            left:${face.alignedRect._box._x / originalImgWidth * 100}%;
-            position:absolute;
-            border: 2px solid blue;
-            border-radius: 4px;
-          `;
-        faceBox.onclick = () => replaceAllOtherFaces(index);
-        document.getElementById("image-container").appendChild(faceBox);
-      })
-    }
-  </script>
-  <div style="display:flex; align-items:center; flex-direction:column;margin:24px">
-    <img src="twinge-logo.png" alt="Twinge" />
-    <p>
-      Have a great pic for your dating profile but there's too many other people in it?
-      Never have to answer the question "Which one is you?" again!
-    </p>
-    <div style="display:flex; flex-direction:column;margin-top:48px;">
-      <div style="display:flex; flex-direction:column;margin-bottom:16px;">
-        <h3>How does it work?</h3>
-        <span>Step 1: Upload a file below</span>
-        <span>Step 2: Click on your uploaded image to detect all faces</span>
-        <span>Step 3: Select your own face!</span>
-      </div>
-      <input
-        type="file"
-        id="pic"
-        name="pic"
-        required
-        accept="image/png, image/jpeg, image/jpg, image/tif, image/raw"
-        onchange="readURL(this);"
-      />
-      <div id="image-container" style="position:relative;margin-top:16px;width:100%;" onclick="createFaceBorders();">
-        <img id="uploaded-image" style="width:100%;" src="#" alt="" />
-      </div>
-    </div>
-  </div>
-</body>
