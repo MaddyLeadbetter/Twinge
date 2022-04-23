@@ -1,7 +1,7 @@
 let faceapi;
-let picker;
 let img;
 let detections;
+let faceToSwap = null
 
 const vert = `
 precision mediump float;
@@ -61,6 +61,8 @@ let alphaShader
 let canvas
 function setup() {
   canvas = createCanvas(640, 480, WEBGL)
+  pixelDensity(1)
+  canvas.hide()
 
   alphaShader = createShader(vert, frag)
 
@@ -68,33 +70,45 @@ function setup() {
     withLandmarks: true,
     withDescriptors: false,
   }, onModelReady);
+  noLoop()
 }
 
-function onFileSelected(file) {
-  if (file.type !== 'image') return;
-  if (img) {
-    img.remove()
-  }
-  const newImg = loadImage(file.data, () => {
+function onFileSelected(imgTag, cb) {
+  const newImg = loadImage(imgTag.src, () => {
     img = newImg
-    faceapi.detect(img, gotResults);
+    faceToSwap = null
+    faceapi.detect(img, (err, result) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      detections = result;
+      resizeCanvas(img.width, img.height)
+      cb(detections)
+    })
   })
+}
+
+function replaceFaces(i, cb) {
+  faceToSwap = i
+  redraw()
+  cb(canvas.elt.toDataURL())
 }
 
 function draw() {
   push()
   clear()
-  background('red')
   translate(-width/2, -height/2)
-
-  scale(0.5)
 
   if (img) {
     image(img, 0, 0)
   }
-  if (detections) {
-    swapFaces(detections[1], detections[0])
-    swapFaces(detections[0], detections[1])
+  if (detections && faceToSwap !== null) {
+    for (let i = 0; i < detections.length; i++) {
+      if (i === faceToSwap) continue
+      swapFaces(detections[i], detections[faceToSwap])
+    }
   }
   pop()
 }
@@ -193,7 +207,7 @@ function poseNetReady() {
 }
 
 function onModelReady() {
-  picker = createFileInput(onFileSelected);
+  console.log('model ready')
 }
 
 function drawFace() {
@@ -201,15 +215,6 @@ function drawFace() {
     drawBox(detections);
     drawLandmarks(detections);
   }
-}
-
-function gotResults(err, result) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-
-  detections = result;
 }
 
 function drawBox(detections) {
