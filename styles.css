@@ -45,11 +45,11 @@ body {
 #image-container {
   position: relative;
   margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 #uploaded-image {
   max-height: 600px;
-  margin-bottom: 16px;
 }
 
 #uploaded-image[src="#"] {
@@ -70,7 +70,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.7);
 }
 .loader:after {
   display: block;
