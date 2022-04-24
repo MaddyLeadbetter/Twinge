@@ -169,23 +169,37 @@ function getFacePoints(face, dilateAmount = 0) {
     .copy()
     .sub(jawPoints[1])
 
-    const leftTop = jawPoints[jawPoints.length - 1]
-      .copy()
-      .add(endTangent.copy().mult(1.5))
-    const rightTop = jawPoints[0]
-      .copy()
-      .add(startTangent.copy().mult(1.5))
-    const topCenter = jawPoints[jawPoints.length - 1]
-      .copy()
-      .add(endTangent.copy().mult(3))
-      .add(jawPoints[0])
-      .add(startTangent.copy().mult(3))
-      .mult(0.5)
+  const leftTop = jawPoints[jawPoints.length - 1]
+    .copy()
+    //.add(endTangent.copy().mult(1.1))
+  const leftTopControl = leftTop
+    .copy()
+    .add(endTangent.copy().mult(5.5))
+  const rightTop = jawPoints[0]
+    .copy()
+    //.add(startTangent.copy().mult(1.1))
+  const rightTopControl = rightTop
+    .copy()
+    .add(startTangent.copy().mult(5.5))
+  const path = new BezierPath([
+    new BezierSegment(
+      leftTop,
+      leftTopControl,
+      rightTopControl,
+      rightTop,
+    ),
+  ])
 
-    points.push(...jawPoints)
-    points.push(leftTop)
-    points.push(topCenter)
-    points.push(rightTop)
+  const numSamples = 20
+  const topCurve = []
+  for (let i = 0; i < numSamples; i++) {
+    const t = i / (numSamples - 1)
+    const pt = path.getPointAtLength(t * path.getTotalLength())
+    topCurve.push(createVector(pt.x, pt.y))
+  }
+
+  points.push(...jawPoints)
+  points.push(...topCurve)
 
   // Connect back to the start
   points.push(points[0])
