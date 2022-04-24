@@ -1,3 +1,6 @@
+<head>
+<title>Twinge</title>
+</head>
 <body>
   <link rel="stylesheet" href="styles.css">
   <script
@@ -41,7 +44,13 @@
           max-height: 600px;
           margin-bottom: 16px;
         `;
-        document.getElementById("body-content").appendChild(img);
+        img.className = 'replaced'
+        const firstResult = document.querySelector('.replaced')
+        if (firstResult) {
+          firstResult.parentNode.insertBefore(img, firstResult)
+        } else {
+          document.getElementById("body-content").appendChild(img);
+        }
       })
     }
 
