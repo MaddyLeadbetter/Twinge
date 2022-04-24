@@ -22,14 +22,17 @@
           reader.onload = function (e) {
               $('#uploaded-image')
                   .attr('src', e.target.result);
+              const nodes = [ ...document.querySelectorAll('.face-box') ]
+              for (const box of nodes) {
+                box.parentNode.removeChild(box)
+              }
               createFaceBorders();
           };
 
           reader.readAsDataURL(input.files[0]);
       }
     }
-  </script>
-  <script>
+
     function replaceAllOtherFaces(index) {
       replaceFaces(index, (src) => {
         const img = document.createElement('img')
@@ -41,8 +44,7 @@
         document.getElementById("body-content").appendChild(img);
       })
     }
-  </script>
-  <script>
+
     function createFaceBorders() {
       const img = document.getElementById('uploaded-image')
       const loader = document.createElement('div')
@@ -80,8 +82,7 @@
       <div class="list">
         <h3>How does it work?</h3>
         <span>Step 1: Upload a file below</span>
-        <span>Step 2: Click on your uploaded image to detect all faces</span>
-        <span>Step 3: Select your own face!</span>
+        <span>Step 2: Select your own face!</span>
         <input
           type="file"
           id="pic"
