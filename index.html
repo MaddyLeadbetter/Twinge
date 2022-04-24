@@ -22,6 +22,7 @@
           reader.onload = function (e) {
               $('#uploaded-image')
                   .attr('src', e.target.result);
+              createFaceBorders();
           };
 
           reader.readAsDataURL(input.files[0]);
@@ -44,7 +45,11 @@
   <script>
     function createFaceBorders() {
       const img = document.getElementById('uploaded-image')
+      const loader = document.createElement('div')
+      loader.className = 'loader'
+      document.body.appendChild(loader)
       onFileSelected(img, (faceArray) => {
+        document.body.removeChild(loader)
         faceArray.forEach((face, index) => {
           const faceBox = document.createElement("div");
           const originalImgWidth = face.alignedRect._imageDims._width;
@@ -86,7 +91,7 @@
           onchange="readURL(this);"
         />
       </div>
-      <div id="image-container" onclick="createFaceBorders();">
+      <div id="image-container">
         <img id="uploaded-image" src="#" alt="" />
       </div>
     </div>
