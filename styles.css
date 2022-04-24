@@ -78,3 +78,29 @@ body {
   font-size: 20px;
   content: 'Calculating...';
 }
+
+.replaced {
+  animation-name: appear;
+  animation-duration: 2s;
+}
+
+@keyframes appear {
+  0% {
+    transform: translateY(-100%) translateY(-16px);
+    opacity: 0;
+  }
+
+  40% {
+    transform: translateY(-100%) translateY(-16px);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-100%) translateY(-16px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
