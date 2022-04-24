@@ -1,4 +1,5 @@
-<body style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+<body>
+  <link rel="stylesheet" href="styles.css">
   <script
     class="jsbin"
     src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
@@ -29,10 +30,13 @@
   </script>
   <script>
     function replaceAllOtherFaces(index) {
-      console.log('*** Replacing all faces except', index);
       replaceFaces(index, (src) => {
         const img = document.createElement('img')
         img.setAttribute('src', src)
+        img.style.cssText = `
+          max-height: 600px;
+          margin-bottom: 16px;
+        `;
         document.body.appendChild(img)
       })
     }
@@ -51,38 +55,39 @@
               top:${face.alignedRect._box._y / originalImgHeight * 100}%;
               left:${face.alignedRect._box._x / originalImgWidth * 100}%;
               position:absolute;
-              border: 2px solid blue;
+              border: 4px dotted white;
               border-radius: 4px;
             `;
+          faceBox.className = 'face-box';
           faceBox.onclick = () => replaceAllOtherFaces(index);
           document.getElementById("image-container").appendChild(faceBox);
         })
       })
     }
   </script>
-  <div style="display:flex; align-items:center; flex-direction:column;margin:24px">
+  <div class="body-content">
     <img src="twinge-logo.png" alt="Twinge" />
     <p>
       Have a great pic for your dating profile but there's too many other people in it?
       Never have to answer the question "Which one is you?" again!
     </p>
-    <div style="display:flex; flex-direction:column;margin-top:48px;">
-      <div style="display:flex; flex-direction:column;margin-bottom:16px;">
+    <div class="instructions">
+      <div class="list">
         <h3>How does it work?</h3>
         <span>Step 1: Upload a file below</span>
         <span>Step 2: Click on your uploaded image to detect all faces</span>
         <span>Step 3: Select your own face!</span>
+        <input
+          type="file"
+          id="pic"
+          name="pic"
+          required
+          accept="image/png, image/jpeg, image/jpg, image/tif, image/raw"
+          onchange="readURL(this);"
+        />
       </div>
-      <input
-        type="file"
-        id="pic"
-        name="pic"
-        required
-        accept="image/png, image/jpeg, image/jpg, image/tif, image/raw"
-        onchange="readURL(this);"
-      />
-      <div id="image-container" style="position:relative;margin-top:16px;width:100%;" onclick="createFaceBorders();">
-        <img id="uploaded-image" style="width:100%;" src="#" alt="" />
+      <div id="image-container" onclick="createFaceBorders();">
+        <img id="uploaded-image" src="#" alt="" />
       </div>
     </div>
   </div>
