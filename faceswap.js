@@ -119,7 +119,7 @@ function swapFaces(vertsFace, uvsFace) {
   textureMode(NORMAL)
   shader(alphaShader)
   alphaShader.setUniform('uImg', img)
-  alphaShader.setUniform('uBelow', canvas)
+  alphaShader.setUniform('uBelow', img)
   alphaShader.setUniform('uSize', [img.width, img.height])
 
   const innerVerts = getFacePoints(vertsFace, 0)
